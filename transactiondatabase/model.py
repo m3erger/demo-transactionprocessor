@@ -30,8 +30,8 @@ from .meta import Base
 
 class User(Base):
     """Relationships:
-    1:n to bitcoin account
-    1:n to ethereum account
+    1:1 to bitcoin account
+    1:1 to ethereum account
     """
     __tablename__ = 'user'
 
@@ -57,7 +57,7 @@ class AccountBitcoin(Base):
     """ address <= 34 char string
     https://en.bitcoin.it/wiki/Address#What.27s_in_an_address
     Relationships:
-    n:1 to user
+    1:1 to user
     """
     __tablename__ = 'accountbitcoin'
 
@@ -79,7 +79,7 @@ class AccountEthereum(Base):
     http://ethdocs.org/en/latest/glossary.html
     https://github.com/ethereum/EIPs/blob/master/EIPS/eip-55.md#rationale
     Relationships:
-    n:1 to user
+    1:1 to user
     """
     __tablename__ = 'accountethereum'
 
