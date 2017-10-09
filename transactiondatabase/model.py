@@ -52,6 +52,9 @@ class User(Base):
             f'max_per_transaction={self.max_per_transaction})>'
         )
 
+    def __str__(self):
+        return self.__repr__()
+
 
 class AccountBitcoin(Base):
     """ address <= 34 char string
@@ -72,6 +75,9 @@ class AccountBitcoin(Base):
 
     def __repr__(self):
         return f'<AccountBitcoin(id={self.id}, user_id={self.user_id}, balance={self.balance})>'
+
+    def __str__(self):
+        return self.__repr__()
 
 
 class AccountEthereum(Base):
@@ -94,6 +100,9 @@ class AccountEthereum(Base):
 
     def __repr__(self):
         return f'<AccountBitcoin(id={self.id}, user_id={self.user_id}, balance={self.balance})>'
+
+    def __str__(self):
+        return self.__repr__()
 
 
 class Transaction(Base):
@@ -128,3 +137,6 @@ class Transaction(Base):
             #f'processed={int(self.timestamp_processed.timestamp())}, '
             f'state={self.state})>'
         )
+
+    def __str__(self):
+        return self.__repr__()

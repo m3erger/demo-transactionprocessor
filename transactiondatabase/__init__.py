@@ -44,3 +44,6 @@ def prefill_db():
 
     session.commit()
     session.close()
+
+
+prefill_db()
