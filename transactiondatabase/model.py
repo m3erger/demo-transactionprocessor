@@ -42,13 +42,12 @@ class User(Base):
     email = Column(String(1000), unique=True)
     max_per_transaction = Column(Integer)
 
-    accounts_bitcoin = relationship('AccountBitcoin', back_populates='user')
-    accounts_ethereum = relationship('AccountEthereum', back_populates='user')
+    accounts_bitcoin = relationship('AccountBitcoin', uselist=False, back_populates='user')
+    accounts_ethereum = relationship('AccountEthereum', uselist=False, back_populates='user')
 
     def __repr__(self):
         return (
             f'<User(id={self.id}, name={self.name}, email={self.email}, '
-            f'accounts={len(self.accounts_bitcoin) + len(self.accounts_ethereum)}, '
             f'BTC={self.accounts_bitcoin}, ETH={self.accounts_ethereum}, '
             f'max_per_transaction={self.max_per_transaction})>'
         )
@@ -120,8 +119,12 @@ class Transaction(Base):
     def __repr__(self):
         return (
             f'<Transaction(id={self.id}, '
-            f'currency_type={self.currency_type}, currancy_amount={self.currency_amount}, '
+            f'currency_type={self.currency_type}, currency_amount={self.currency_amount}, '
             f'source={self.source_user_id}, target={self.target_user_id}, '
+            
             f'created={self.timestamp_created}, processed={self.timestamp_processed}, '
+            
+            #f'created={int(self.timestamp_created.timestamp())}, '
+            #f'processed={int(self.timestamp_processed.timestamp())}, '
             f'state={self.state})>'
         )
