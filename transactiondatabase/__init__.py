@@ -25,20 +25,20 @@ def prefill_db():
     session = get_session()
 
     session.add_all([
-        User(password='asdf', name='test1', description='desc.',
+        User(name='test1', description='desc.',
              email='te.st1@example.com', max_per_transaction=500,
-             accounts_bitcoin=AccountBitcoin(id='001122334455', balance=50)),
-        User(password='qwer', name='test2', description='des2.',
+             account_bitcoin=AccountBitcoin(id='001122334455', balance=50)),
+        User(name='test2', description='des2.',
              email='qw.er1234@gmail.com', max_per_transaction=3,
-             accounts_bitcoin=AccountBitcoin(id='aabbccddee')),
+             account_bitcoin=AccountBitcoin(id='aabbccddee')),
         Transaction(currency_type='BTC', currency_amount=1,
-                    source_user_id='001122334455', target_user_id='aabbccddee',
+                    source_user_id='1', target_user_id='2',
                     timestamp_created=datetime.now(), state='NEW'),
         Transaction(currency_type='BTC', currency_amount=1,
-                    source_user_id='001122334455', target_user_id='aabbccddee',
+                    source_user_id='1', target_user_id='2',
                     timestamp_created=datetime.now(), state='ERROR'),
         Transaction(currency_type='BTC', currency_amount=1,
-                    source_user_id='001122334455', target_user_id='aabbccddee',
+                    source_user_id='1', target_user_id='2',
                     timestamp_created=datetime.now(), state='DONE'),
     ])
 
