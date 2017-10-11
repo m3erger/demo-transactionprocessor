@@ -157,7 +157,6 @@ class Transaction(Base):
             f'<Transaction(id={self.id}, '
             f'currency_type={self.currency_type}, currency_amount={self.currency_amount}, '
             f'source={self.source_user_id}, target={self.target_user_id}, '
-            
             f'created={self.timestamp_created}, processed={self.timestamp_processed}, '
             f'state={self.state})>'
         )

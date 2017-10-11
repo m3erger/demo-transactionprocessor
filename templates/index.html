@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Crypto Transaction demo</title>
+    <script src="/js/jquery-3.2.1.js"></script>
+    <script src="/js/logic.js"></script>
+    <input id="user_id" type="hidden" name="user_id" value="{{ user_id }}">
+</head>
+<body>
+    <div id="nav">
+        <h1 id="title">Crypto Transaction demo</h1>
+    </div>
+    <div id="user_container">
+        <h3>Add User</h3>
+        <form id="add_user">
+            <input id="add_name" type="text" name="name" value="name">
+            <input id="add_desc" type="text" name="description" value="description">
+            <input id="add_email" type="text" name="email" value="email">
+            <input id="add_max_per_transaction" type="text" name="max_per_transaction" value=10>
+            <input id="add_account_btc" type="text" name="account_bitcoin" value="BTC">
+            <input id="add_account_eth" type="text" name="account_ethereum" value="ETH">
+            <input type="submit" value="create user">
+        </form>
+        <h3>User List</h3>
+        <ul id="users">
+
+        </ul>
+    </div>
+    <div id="transaction_container">
+        <ul id="transactions">
+
+        </ul>
+    </div>
+</body>
+</html>

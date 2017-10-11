@@ -1,3 +1,4 @@
+jinja2
 hug
 sqlalchemy
 validate_email
