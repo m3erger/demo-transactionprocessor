@@ -157,9 +157,6 @@ class Transaction(Base):
             f'source={self.source_user_id}, target={self.target_user_id}, '
             
             f'created={self.timestamp_created}, processed={self.timestamp_processed}, '
-            
-            #f'created={int(self.timestamp_created.timestamp())}, '
-            #f'processed={int(self.timestamp_processed.timestamp())}, '
             f'state={self.state})>'
         )
 
@@ -188,7 +185,6 @@ class Transaction(Base):
 
     def process(self):
         if self.state != 'PROCESSING':
-            #raise TransactionException(f'Trying to process Transaction already processed ({self.state})')
             return
         try:
             source, target = self._get_user_accounts()
