@@ -180,3 +180,8 @@ fabric.properties
 pyvenv.cfg
 .venv
 pip-selfcheck.json
+
+/sqlite.db
+/Python-*/
+/python-*/
+/Python-3.*.tar.xz
