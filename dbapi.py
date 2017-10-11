@@ -24,7 +24,7 @@ import time
 from sqlalchemy import or_, and_
 from sqlalchemy.exc import IntegrityError
 import hug
-
+import validate_email
 
 import transactiondatabase as db
 
@@ -32,10 +32,13 @@ transaction_queue = Queue()
 
 
 @hug.post('/user')
-def create_user(name: hug.types.text, description: hug.types.text, email: hug.types.text,
+def create_user(name: hug.types.text, description: hug.types.text,
+                email: hug.types.text,
                 max_per_transaction: hug.types.number,
                 account_bitcoin: hug.types.text=None,
                 account_ethereum: hug.types.text=None):
+    if not validate_email.validate_email(email):
+        return f'email was not valid - {email}'
     accounts = {}
     session = db.get_session()
     if account_bitcoin:
