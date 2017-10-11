@@ -187,20 +187,27 @@ class Transaction(Base):
             return source, target
 
     def process(self):
-        if self.state != 'NEW':
-            raise TransactionException(f'Trying to process Transaction already processed ({self.state})')
+        if self.state != 'PROCESSING':
+            #raise TransactionException(f'Trying to process Transaction already processed ({self.state})')
+            return
         try:
             source, target = self._get_user_accounts()
             if not source or not target:
                 raise TransactionException(f'Source or Target User had no matching Currency Account')
             if source.balance < self.currency_amount:
-                raise TransactionException(f'User had not enough money ({source.balance} < {self.currency_amount})')
-            source -= self.currency_amount
-            target += self.currency_amount
+                raise TransactionException(
+                    f'User had not enough money ({source.balance} < {self.currency_amount})')
+            if self.source_user.max_per_transaction < self.currency_amount:
+                raise TransactionException(
+                    f'Send limit reached ({self.currency_amount} > {self.source_user.max_per_transaction})')
+            if target.balance + self.currency_amount > 1000000000:
+                raise TransactionException(
+                    f'Target would reach currency limit')
+            source.balance -= self.currency_amount
+            target.balance += self.currency_amount
             self.state = 'DONE'
-            self.save()
-        except TransactionException:
-            self.state = 'ERROR'
+        except TransactionException as e:
+            self.state = f'ERROR - {str(e)}'
 
 
 class TransactionException(Exception):

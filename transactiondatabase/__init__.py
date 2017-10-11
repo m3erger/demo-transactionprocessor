@@ -11,7 +11,7 @@ from .model import *
 # all relationships can be setup
 configure_mappers()
 
-_engine = create_engine('sqlite://', echo=False)
+_engine = create_engine('sqlite:///sqlite.db', echo=False)
 _session_factory = sessionmaker(bind=_engine)
 
 Base.metadata.create_all(_engine)
@@ -23,7 +23,9 @@ def get_session():
 
 def prefill_db():
     session = get_session()
-
+    if len(session.query(User).all()) > 0:
+        session.close()
+        return
     session.add_all([
         User(name='test1', description='desc.',
              email='te.st1@example.com', max_per_transaction=500,
@@ -41,7 +43,6 @@ def prefill_db():
                     source_user_id='1', target_user_id='2',
                     timestamp_created=datetime.now(), state='DONE'),
     ])
-
     session.commit()
     session.close()
 

@@ -17,13 +17,18 @@ Endpoint requirements:
     e. Retrieve transaction status
 """
 from datetime import datetime
+from multiprocessing import Process, Queue
+from queue import Empty
+import time
 
-from sqlalchemy import or_
+from sqlalchemy import or_, and_
 from sqlalchemy.exc import IntegrityError
 import hug
 
 
 import transactiondatabase as db
+
+transaction_queue = Queue()
 
 
 @hug.post('/user')
@@ -137,6 +142,7 @@ def submit_transaction(source: hug.types.text, target: hug.types.text,
     session.commit()
     ret = transaction.as_dict()
     session.close()
+    transaction_queue.put(ret['id'])
     return ret
 
 
@@ -172,3 +178,38 @@ def get_transaction_status(id: hug.types.number):
     if transaction:
         return transaction.state
     return f'No such Transaction'
+
+
+def transaction_processor():
+    def process_one(session, transaction):
+        transaction.state = 'PROCESSING'
+        session.commit()
+        time.sleep(2)
+        transaction.process()
+        session.commit()
+
+    while True:
+        session = db.get_session()
+        try:
+            transaction_id = transaction_queue.get(timeout=2)
+            if not transaction_id:
+                break
+        except Empty:
+            transaction = session.query(db.Transaction).filter(db.Transaction.state == 'NEW').first()
+            if transaction:
+                process_one(session, transaction)
+        else:
+            transactions = session.query(db.Transaction).filter(and_(
+                db.Transaction.id < transaction_id, db.Transaction.state == 'NEW')).all()
+            for i in transactions:
+                process_one(session, i)
+            transaction = session.query(db.Transaction).filter(db.Transaction.id == transaction_id).first()
+            if not transaction:
+                continue
+            process_one(session, transaction)
+        finally:
+            session.close()
+
+
+process = Process(target=transaction_processor, daemon=True)
+process.start()
