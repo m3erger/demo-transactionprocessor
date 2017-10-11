@@ -194,6 +194,8 @@ def transaction_processor():
             transaction_id = transaction_queue.get(timeout=2)
             if not transaction_id:
                 break
+        except KeyboardInterrupt:
+            break
         except Empty:
             transaction = session.query(db.Transaction).filter(db.Transaction.state == 'NEW').first()
             if transaction:

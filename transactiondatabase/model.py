@@ -22,6 +22,8 @@ Database requirements:
                    - Timestamp processed
                    - State
 """
+from datetime import datetime
+
 from sqlalchemy import Column, Integer, BigInteger, String, ForeignKey, TIMESTAMP, CheckConstraint
 from sqlalchemy.orm import relationship
 
@@ -167,7 +169,9 @@ class Transaction(Base):
             'currency_amount': self.currency_amount,
             'source_user_id': self.source_user_id,
             'target_user_id': self.target_user_id,
-            'state': self.state
+            'state': self.state,
+            'timestamp_created': self.timestamp_created,
+            'timestamp_processed': self.timestamp_processed
         }
 
     def _get_user_accounts(self):
@@ -204,6 +208,8 @@ class Transaction(Base):
             self.state = 'DONE'
         except TransactionException as e:
             self.state = f'ERROR - {str(e)}'
+        finally:
+            self.timestamp_processed = datetime.now()
 
 
 class TransactionException(Exception):
