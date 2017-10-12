@@ -42,4 +42,4 @@ then
 fi
 
 echo "run dbapi.py via hug..."
-hug -f ./dbapi.py
+"${python_dist}/bin/hug" -f ./dbapi.py
