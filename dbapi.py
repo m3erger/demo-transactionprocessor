@@ -250,7 +250,7 @@ def index(user_id: hug.types.number=None):
     return template.render({'user_id': user_id if user_id else ''})
 
 
-@hug.static('/js')
+@hug.static('/static')
 def js_dir():
     """Returns static directory names to be served."""
     directory = os.path.dirname(os.path.realpath(__file__))
