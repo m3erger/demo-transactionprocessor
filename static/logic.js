@@ -4,6 +4,8 @@ $(document).ready(function () {
     $("#add_user").on("submit", add_user);
     /**add add_transaction click listener*/
     $("#add_transaction").on("submit", add_transaction);
+    /**add add_currency click listener*/
+    $("#add_currency").on("submit", add_currency);
     /**AJAX call to get selected (all) user(s)*/
     get_users();
 
@@ -22,9 +24,6 @@ $(document).ready(function () {
 
 
     function update_userlist(users) {
-        var source = $('#add_transaction_source');
-        var target = $('#add_transaction_target');
-
         /**remove old user list*/
         $.each($("#users").find("a"), function (index, user) {
             $(user).off("click");
@@ -34,10 +33,18 @@ $(document).ready(function () {
         });
 
         /**remove add transaction select options*/
-        $.each(source.find('option'), function (index, option) {
+        var t_source = $("#add_transaction_source");
+        var t_target = $("#add_transaction_target");
+        $.each(t_source.find("option"), function (index, option) {
             $(option).remove();
         });
-        $.each(target.find('option'), function (index, option) {
+        $.each(t_target.find("option"), function (index, option) {
+            $(option).remove();
+        });
+
+        /**remove add transaction select options*/
+        var c_user = $("#add_currency_user");
+        $.each(c_user.find("option"), function (index, option) {
             $(option).remove();
         });
 
@@ -62,8 +69,11 @@ $(document).ready(function () {
 
             /**also fill options of transaction select fields*/
             var transaction_options = "<option value='" + user.id + "'>" + user.id + "</option>";
-            source.append(transaction_options);
-            target.append(transaction_options);
+            t_source.append(transaction_options);
+            t_target.append(transaction_options);
+
+            /**also fill options of add currency select field*/
+            c_user.append("<option value='" + user.id + "'>" + user.id + "</option>");
         });
     }
 
@@ -71,7 +81,7 @@ $(document).ready(function () {
     function add_user_click_handlers() {
         $.each($("#users").find("a"), function (index, user) {
             var user_id = user.href.split('#')[1];
-            $(user).on('click', function(event) {
+            $(user).on('click', function (event) {
                 event.preventDefault();
                 get_transactions_of(user_id);
                 get_users();
@@ -167,5 +177,27 @@ $(document).ready(function () {
             get_users();
             get_transactions_of(id);
         }, 3000);
+    }
+
+
+    function add_currency(event) {
+        event.preventDefault();
+        event.stopPropagation();
+
+        var form = event.currentTarget;
+        var data = {
+            user: form[0].value,
+            currency: form[1].value,
+            amount: form[2].value
+        };
+        $.post({
+            url: "add",
+            data: data,
+            dataType: "json"
+        }).done(function (json) {
+            get_users()
+        }).fail(function (err) {
+            alert(err);
+        });
     }
 });
