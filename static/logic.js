@@ -7,6 +7,7 @@ $(document).ready(function () {
     /**AJAX call to get selected (all) user(s)*/
     get_users();
 
+
     function get_users() {
         $.get({
             url: "user",
@@ -14,17 +15,21 @@ $(document).ready(function () {
         }).done(function (users) {
             update_userlist(users);
             add_user_click_handlers();
-        }).fail(function(err) {
+        }).fail(function (err) {
             alert(err);
         });
     }
+
 
     function update_userlist(users) {
         var source = $('#add_transaction_source');
         var target = $('#add_transaction_target');
 
         /**remove old user list*/
-        $.each($("#users").find("li"), function(index, user) {
+        $.each($("#users").find("a"), function (index, user) {
+            $(user).off("click");
+        });
+        $.each($("#users").find("li"), function (index, user) {
             user.remove();
         });
 
@@ -62,14 +67,18 @@ $(document).ready(function () {
         });
     }
 
+
     function add_user_click_handlers() {
-        $("#users").find("a").click(function (event) {
-            event.preventDefault();
-            var elem = $(this);
-            var user_id = elem.attr('href').split('#')[1];
-            $(elem).on('click', get_transactions_of(user_id));
+        $.each($("#users").find("a"), function (index, user) {
+            var user_id = user.href.split('#')[1];
+            $(user).on('click', function(event) {
+                event.preventDefault();
+                get_transactions_of(user_id);
+                get_users();
+            });
         });
     }
+
 
     function get_transactions_of(user_id) {
         $.get({
@@ -98,10 +107,11 @@ $(document).ready(function () {
                     "</li>";
                 transactions.append(li_transaction);
             });
-        }).fail(function(err) {
+        }).fail(function (err) {
             alert(err);
         });
     }
+
 
     function add_user(event) {
         event.preventDefault();
@@ -120,14 +130,15 @@ $(document).ready(function () {
             url: "user",
             data: data,
             dataType: "json"
-        }).done(function(json) {
+        }).done(function (json) {
             get_users();
-        }).fail(function(err) {
+        }).fail(function (err) {
             alert(err);
         });
     }
 
-     function add_transaction(event) {
+
+    function add_transaction(event) {
         event.preventDefault();
         event.stopPropagation();
 
@@ -142,11 +153,19 @@ $(document).ready(function () {
             url: "submit",
             data: data,
             dataType: "json"
-        }).done(function(json) {
-            get_transactions_of(json.source_user_id);
-            get_users();
-        }).fail(function(err) {
+        }).done(function (json) {
+            get_transactions_of(json.target_user_id);
+            add_refresh(json.target_user_id);
+        }).fail(function (err) {
             alert(err);
         });
+    }
+
+
+    function add_refresh(id) {
+        setTimeout(function () {
+            get_users();
+            get_transactions_of(id);
+        }, 3000);
     }
 });
