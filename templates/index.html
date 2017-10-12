@@ -14,29 +14,37 @@
     <input id="user_id" type="hidden" name="user_id" value="{{ user_id }}">
 </head>
 <body>
-    <div id="nav">
-        <h1 id="title">Crypto Transaction demo</h1>
-    </div>
-    <div id="user_container">
+    <h1 id="title">Crypto Transaction demo</h1>
+    <div id="form_container">
         <h3>Add User</h3>
         <form id="add_user">
-            <input id="add_name" type="text" name="name" value="name">
-            <input id="add_desc" type="text" name="description" value="description">
-            <input id="add_email" type="text" name="email" value="email">
-            <input id="add_max_per_transaction" type="text" name="max_per_transaction" value=10>
-            <input id="add_account_btc" type="text" name="account_bitcoin" value="BTC">
-            <input id="add_account_eth" type="text" name="account_ethereum" value="ETH">
+            <input id="add_user_name" type="text" name="name" value="name">
+            <input id="add_user_desc" type="text" name="description" value="description">
+            <input id="add_user_email" type="text" name="email" value="email@domain">
+            <input id="add_user_max_per_transaction" type="text" name="max_per_transaction" value=10>
+            <input id="add_user_account_btc" type="text" name="account_bitcoin" value="BTC">
+            <input id="add_user_account_eth" type="text" name="account_ethereum" value="ETH">
             <input type="submit" value="create user">
         </form>
-        <h3>User List</h3>
-        <ul id="users">
-
-        </ul>
+        <h3>Add Transaction</h3>
+        <form id="add_transaction">
+            source: <select id="add_transaction_source" name="source"></select>
+            target: <select id="add_transaction_target" name="target"></select>
+            currency: <select id="add_transaction_currency" name="currency">
+                          <option value="BTC">BTC</option>
+                          <option value="ETH">ETH</option>
+                      </select>
+            amount: <input id="add_transaction_amount" type="text" name="amount" value=3>
+            <input type="submit" value="create transaction">
+        </form>
+    </div>
+    <div id="user_container">
+        <h3 id="user_list_title">User List</h3>
+        <ul id="users"></ul>
     </div>
     <div id="transaction_container">
-        <ul id="transactions">
-
-        </ul>
+        <h3 id="transaction_list_title">Transactions</h3>
+        <ul id="transactions"></ul>
     </div>
 </body>
 </html>

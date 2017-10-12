@@ -142,6 +142,8 @@ def submit_transaction(source: hug.types.text, target: hug.types.text,
         'BTC': 'account_bitcoin',
         'ETH': 'account_ethereum'
     }.get(currency, '')
+    if not account_type:
+        return f'No such Currency - {currency}'
     session = db.get_session()
     try:
         s = session.query(db.User).filter(db.User.id == source).first()
@@ -251,7 +253,7 @@ def index(user_id: hug.types.number=None):
 
 
 @hug.static('/static')
-def js_dir():
+def static_dir():
     """Returns static directory names to be served."""
     directory = os.path.dirname(os.path.realpath(__file__))
     directory = os.path.join(directory, 'static')
