@@ -2,7 +2,7 @@ The _Demo-Transactionprocessor_ is basic web-application for processing transact
 
 ## Usage
 Call `run.sh` contained in the `/` directory:
- * It creates a local Python 3.6 distribution
+ * Either creates a venv if installed python > 3.6 or local distribution
  * Installs the requirements into it
  * Runs the server via `hug`
 
