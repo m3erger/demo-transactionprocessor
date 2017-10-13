@@ -185,3 +185,4 @@ pip-selfcheck.json
 /Python-*/
 /python-*/
 /Python-3.*.tar.xz
+/transactions.log

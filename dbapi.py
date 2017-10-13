@@ -28,6 +28,7 @@ from sqlalchemy.exc import IntegrityError
 import hug
 import validate_email
 
+from log import logger
 import transactiondatabase as db
 
 transaction_queue = Queue()
@@ -158,6 +159,7 @@ def submit_transaction(source: hug.types.text, target: hug.types.text,
         session.add(transaction)
         session.commit()
         ret = transaction.as_dict()
+        logger.debug(ret)
         transaction_queue.put(ret['id'])
     finally:
         session.close()
@@ -210,9 +212,11 @@ def transaction_processor():
     def process_one(session, transaction):
         transaction.state = 'PROCESSING'
         session.commit()
+        logger.debug(transaction.as_dict())
         time.sleep(2)
         transaction.process()
         session.commit()
+        logger.debug(transaction.as_dict())
 
     while True:
         session = db.get_session()
