@@ -15,3 +15,34 @@ Call `run.sh` contained in the `/` directory:
     - Database abstraction layer
 * validate_email
     - Format checking at user creation
+
+
+## Endpoints
+
+### WEB
+* `/`
+    * rendered web-application template
+* `/static`
+    * serves folder containing .js and .css files
+
+### REST
+* `/user`
+    * _GET_
+        * get all or just selected user(s) 
+    * _POST_
+        * create user
+* `/add_account`
+    * _POST_
+        * add account to user
+* `/add`
+    * _POST_
+        * add currency to user
+* `/submit`
+    * _POST_
+        * add transaction
+* `/history`
+    * _GET_
+        * get all transactions of user
+* `/transaction`
+    * _GET_
+        * get state of selected transaction
