@@ -1,4 +1,6 @@
 #!/usr/bin/env bash
+DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
+cd "${DIR:?}"
 
 python_version="3.6.3"
 python_folder="Python-${python_version}"
